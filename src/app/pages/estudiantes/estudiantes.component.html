@@ -1,0 +1,62 @@
+<div class="container-fluid d-flex">
+    <!-- Lado izquierdo que ocupa el 50% de la pantalla -->
+    <div class="col-6">
+
+        <h2>Añadir Estudiante</h2>
+
+
+    </div>
+
+    <!-- Lado derecho que ocupa el 50% de la pantalla -->
+    <div class="col-6 d-flex flex-column align-items-center">
+        <!-- Primera tabla -->
+        <div class="table-responsive mb-4" style="width: 100%;">
+            <label>Tabla de usuarios permitidos a prestamos</label>
+            <table class="table table-bordered table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Cédula</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Sexo</th>
+                        <th>Nacimiento</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let estudiante of estudiantestrue">
+                        <td>{{ estudiante.cedula }}</td>
+                        <td>{{ estudiante.nombre }}</td>
+                        <td>{{ estudiante.apellido }}</td>
+                        <td>{{ estudiante.sexo }}</td>
+                        <td>{{ estudiante.fechaNacimiento }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Segunda tabla -->
+        <div class="table-responsive" style="width: 100%;">
+            <label>Tabla de usuarios no permitidos a prestamos</label>
+            <table class="table table-bordered table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Cédula</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Sexo</th>
+                        <th>Nacimiento</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let estudiante of estudiantesfalse">
+                        <td>{{ estudiante.cedula }}</td>
+                        <td>{{ estudiante.nombre }}</td>
+                        <td>{{ estudiante.apellido }}</td>
+                        <td>{{ estudiante.sexo }}</td>
+                        <td>{{ estudiante.fechaNacimiento }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
