@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { NgFor, NgIf } from '@angular/common';
+import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { Prestamo } from '../../../Entidades/Prestamos';
 import { cargarPrestamos } from '../../../Controller/TListaPrestamos';
 import { cargarCedulasEstudiantes } from '../../../Controller/TListaEstudiantes';
@@ -10,7 +10,7 @@ import { cargarCodigo } from '../../../Controller/TListaLibros';
 @Component({
   selector: 'app-prestamos',
   standalone: true,
-  imports: [HttpClientModule, NgIf, NgFor, FormsModule, ReactiveFormsModule],
+  imports: [HttpClientModule, NgIf, NgFor, FormsModule, ReactiveFormsModule, CommonModule],
   templateUrl: './prestamos.component.html',
   styleUrl: './prestamos.component.css'
 })

@@ -4,7 +4,7 @@
         <h2>Formulario Libro</h2>
         <div class="form-container">
             <form [formGroup]="librosForm" (ngSubmit)="onSubmit()">
-                <div class="form-group">
+                <div class="form-group mt-2">
                     <label for="codigo">Código:</label>
                     <input type="text" id="codigo" formControlName="codigo" class="form-control" />
                     <div *ngIf="librosForm.get('codigo')?.invalid && librosForm.get('codigo')?.touched" class="text-danger">
@@ -12,7 +12,7 @@
                     </div>
                 </div>
     
-                <div class="form-group">
+                <div class="form-group mt-2">
                     <label for="categoria">Categoría:</label>
                     <select id="categoria" formControlName="categoria" class="form-control">
                         <option value="">Selecciona una categoría</option>
@@ -24,7 +24,7 @@
                     </div>
                 </div>
     
-                <div class="form-group">
+                <div class="form-group mt-2">
                     <label for="editorial">Editorial:</label>
                     <input type="text" id="editorial" formControlName="editorial" class="form-control" />
                     <div *ngIf="librosForm.get('editorial')?.invalid && librosForm.get('editorial')?.touched"
@@ -33,7 +33,7 @@
                     </div>
                 </div>
     
-                <div class="form-group">
+                <div class="form-group mt-2">
                     <label for="nombre">Nombre del libro:</label>
                     <input type="text" id="nombre" formControlName="nombre" class="form-control" />
                     <div *ngIf="librosForm.get('nombre')?.invalid && librosForm.get('nombre')?.touched" class="text-danger">
@@ -41,7 +41,7 @@
                     </div>
                 </div>
     
-                <div class="form-group">
+                <div class="form-group mt-2">
                     <label for="autor">Autor:</label>
                     <input type="text" id="autor" formControlName="autor" class="form-control" />
                     <div *ngIf="librosForm.get('autor')?.invalid && librosForm.get('autor')?.touched" class="text-danger">
@@ -49,7 +49,7 @@
                     </div>
                 </div>
     
-                <div class="form-group">
+                <div class="form-group mt-2">
                     <label for="ano">Año:</label>
                     <input type="text" id="ano" formControlName="ano" class="form-control" />
                     <div *ngIf="librosForm.get('ano')?.invalid && librosForm.get('ano')?.touched" class="text-danger">
@@ -57,7 +57,7 @@
                     </div>
                 </div>
     
-                <div class="form-group">
+                <div class="form-group mt-2">
                     <label for="tipo">Tipo:</label>
                     <select id="tipo" formControlName="tipo" class="form-control">
                         <option value="">Selecciona un tipo</option>
@@ -68,12 +68,12 @@
                     </div>
                 </div>
     
-                <div class="form-group form-check">
+                <div class="form-group form-check mt-2">
                     <input type="checkbox" id="estado" formControlName="estado" class="form-check-input" />
                     <label for="estado" class="form-check-label">Disponible</label>
                 </div>
     
-                <button type="submit" class="btn btn-dark mt-1" [disabled]="librosForm.invalid">
+                <button type="submit" class="btn btn-dark mt-2" [disabled]="librosForm.invalid">
                     {{ idEditar ? 'Actualizar Libro' : 'Agregar Libro' }}
                 </button>
                 <button *ngIf="idEditar" class="btn btn-dark mt-2" (click)="crearNuevoLibro()">Cancelar Edición</button>

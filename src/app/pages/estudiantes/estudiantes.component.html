@@ -3,7 +3,7 @@
     <div class="col-4 mx-3">
         <h2>Formulario Estudiante</h2>
         <form [formGroup]="estudiantesForm" (ngSubmit)="onSubmit()">
-            <div class="form-group">
+            <div class="form-group mt-2">
                 <label for="cedula">Cédula:</label>
                 <input id="cedula" formControlName="cedula" class="form-control" type="text" />
                 <div *ngIf="estudiantesForm.get('cedula')?.invalid && estudiantesForm.get('cedula')?.touched"
@@ -12,7 +12,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group mt-2">
                 <label for="nombre">Nombre:</label>
                 <input id="nombre" formControlName="nombre" class="form-control" type="text" />
                 <div *ngIf="estudiantesForm.get('nombre')?.invalid && estudiantesForm.get('nombre')?.touched"
@@ -21,7 +21,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group mt-2">
                 <label for="apellido">Apellido:</label>
                 <input id="apellido" formControlName="apellido" class="form-control" type="text" />
                 <div *ngIf="estudiantesForm.get('apellido')?.invalid && estudiantesForm.get('apellido')?.touched"
@@ -30,7 +30,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group mt-2">
                 <label for="sexo">Sexo:</label>
                 <select id="sexo" formControlName="sexo" class="form-control">
                     <option value="">Seleccionar</option>
@@ -43,7 +43,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group mt-2">
                 <label for="fechaNacimiento">Fecha de Nacimiento:</label>
                 <input id="fechaNacimiento" formControlName="fechaNacimiento" class="form-control" type="date" />
                 <div *ngIf="estudiantesForm.get('fechaNacimiento')?.invalid && estudiantesForm.get('fechaNacimiento')?.touched"
@@ -52,7 +52,7 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-dark" [disabled]="estudiantesForm.invalid">Agregar
+            <button type="submit" class="btn btn-dark mt-2" [disabled]="estudiantesForm.invalid">Agregar
                 Estudiante</button>
         </form>
 
@@ -78,7 +78,7 @@
                         <td>{{ estudiante.nombre }}</td>
                         <td>{{ estudiante.apellido }}</td>
                         <td>{{ estudiante.sexo }}</td>
-                        <td>{{ estudiante.fechaNacimiento }}</td>
+                        <td>{{ estudiante.fechaNacimiento | date: 'EEEE, d MMMM yyyy' }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -103,7 +103,7 @@
                         <td>{{ estudiante.nombre }}</td>
                         <td>{{ estudiante.apellido }}</td>
                         <td>{{ estudiante.sexo }}</td>
-                        <td>{{ estudiante.fechaNacimiento }}</td>
+                        <td>{{ estudiante.fechaNacimiento | date: 'EEEE, d MMMM yyyy' }}</td>
                     </tr>
                 </tbody>
             </table>

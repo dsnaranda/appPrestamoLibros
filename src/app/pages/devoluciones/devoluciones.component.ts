@@ -1,4 +1,4 @@
-import { NgFor, NgIf } from '@angular/common';
+import { NgFor, NgIf, CommonModule  } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -9,7 +9,7 @@ import { cargarDevoluciones } from '../../../Controller/TListaDevolver';
 @Component({
   selector: 'app-devoluciones',
   standalone: true,
-  imports: [HttpClientModule, NgIf, NgFor, FormsModule, ReactiveFormsModule],
+  imports: [HttpClientModule, NgIf, NgFor, FormsModule, ReactiveFormsModule, CommonModule],
   templateUrl: './devoluciones.component.html',
   styleUrl: './devoluciones.component.css'
 })

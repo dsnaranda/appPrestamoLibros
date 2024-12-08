@@ -3,7 +3,7 @@
     <div class="col-4 mx-3">
         <h2>Formulario Prestamos</h2>
         <form [formGroup]="prestamoForm" (ngSubmit)="addToList()">
-            <div class="form-group">
+            <div class="form-group mt-2">
                 <label for="codigo">Codigo:</label>
                 <input id="codigo" formControlName="codigo" class="form-control" type="text" />
                 <div *ngIf="prestamoForm.get('codigo')?.invalid && prestamoForm.get('codigo')?.touched"
@@ -12,7 +12,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group mt-2">
                 <label for="cedula">Cédula:</label>
                 <select id="cedula" formControlName="cedula" class="form-control">
                     <option value="">Selecciona una cédula</option>
@@ -24,7 +24,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group mt-2">
                 <label for="codlib">Codigo de libro:</label>
                 <select id="codlib" formControlName="codlib" class="form-control">
                     <option value="">Seleccione un libro</option>
@@ -36,12 +36,12 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group mt-2">
                 <label for="fPrestamo">Fecha de prestamo:</label>
                 <input id="fPrestamo" formControlName="fPrestamo" class="form-control" type="date" />
             </div>
 
-            <div class="form-group">
+            <div class="form-group mt-2">
                 <label for="fLimite">Fecha de limite:</label>
                 <input id="fLimite" formControlName="fLimite" class="form-control" type="date" />
                 <div *ngIf="prestamoForm.get('fLimite')?.invalid && prestamoForm.get('fLimite')?.touched"
@@ -50,8 +50,8 @@
                 </div>
             </div>
 
-            <button type="button" class="btn btn-primary" (click)="addToList()">Añadir a la lista</button>
-            <button type="button" class="btn btn-dark" [disabled]="prestamosList.length === 0"
+            <button type="button" class="btn btn-primary mt-2 mx-3" (click)="addToList()">Añadir a la lista</button>
+            <button type="button" class="btn btn-dark mt-2" [disabled]="prestamosList.length === 0"
                 (click)="submitList()">Enviar todos</button>
         </form>
 
@@ -86,8 +86,8 @@
                         <td>{{ prestamo.codigo }}</td>
                         <td>{{ prestamo.cedula }}</td>
                         <td>{{ prestamo.codlib }}</td>
-                        <td>{{ prestamo.fPrestamo }}</td>
-                        <td>{{ prestamo.fLimite }}</td>
+                        <td>{{ prestamo.fPrestamo  | date: 'EEEE, d MMMM yyyy' }}</td>
+                        <td>{{ prestamo.fLimite  | date: 'EEEE, d MMMM yyyy' }}</td>
                         <td>{{ prestamo.estado }}</td>
                     </tr>
                 </tbody>
