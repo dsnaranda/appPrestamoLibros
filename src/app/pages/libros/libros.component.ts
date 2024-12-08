@@ -91,6 +91,9 @@ export class LibrosComponent implements OnInit {
                 this.libros = data;
                 console.log('Libros cargados:', this.libros);
               });
+              this.librosForm.reset({
+                estado: true
+              });
             },
             (error) => {
               console.error('Error al editar el libro', error);
@@ -105,6 +108,9 @@ export class LibrosComponent implements OnInit {
               cargarLibros(this.http).then((data) => {
                 this.libros = data;
                 console.log('Libros cargados:', this.libros);
+              });
+              this.librosForm.reset({
+                estado: true
               });
             },
             (error) => {

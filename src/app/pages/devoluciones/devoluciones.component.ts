@@ -50,23 +50,35 @@ export class DevolucionesComponent implements OnInit {
 
   }
 
-  // Método para enviar el formulario
   onSubmit(): void {
     if (this.devolucionesForm.valid) {
+      const formData = this.devolucionesForm.value;
+  
+      // Ajustar la fecha de devolución dentro del método
+      const fechaOriginal = new Date(formData.fDevolucion);
+      fechaOriginal.setDate(fechaOriginal.getDate() + 1);
+      formData.fDevolucion = fechaOriginal.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+  
       // Enviar los datos del formulario al servidor
-      this.http.post('http://localhost:3000/api/addDevoluciones', this.devolucionesForm.value)
+      this.http.post('http://localhost:3000/api/addDevoluciones', formData)
         .subscribe(
           (response) => {
             console.log('Devolución agregada', response);
-            // Cargar las devoluciones
+  
+            // Cargar las devoluciones nuevamente
             cargarDevoluciones(this.http)
               .then((data) => {
-                this.devoluciones = data; // Asignar los datos a la propiedad devoluciones
+                this.devoluciones = data;
                 console.log("Devoluciones cargadas:", this.devoluciones);
               })
               .catch((error) => {
                 console.error("Error al cargar las devoluciones:", error);
               });
+  
+            // Reiniciar el formulario
+            this.devolucionesForm.reset({
+              estado: true
+            });
           },
           (error) => {
             console.error('Error al agregar la devolución', error);
@@ -76,4 +88,5 @@ export class DevolucionesComponent implements OnInit {
       console.log('Formulario inválido');
     }
   }
+  
 }

@@ -38,7 +38,7 @@
 
             <div class="form-group mt-2">
                 <label for="fPrestamo">Fecha de prestamo:</label>
-                <input id="fPrestamo" formControlName="fPrestamo" class="form-control" type="date" />
+                <input id="fPrestamo" formControlName="fPrestamo" class="form-control" type="date" readonly/>
             </div>
 
             <div class="form-group mt-2">
@@ -76,9 +76,9 @@
                         <th>Codigo</th>
                         <th>Cedula</th>
                         <th>Codlib</th>
-                        <th>fPrestamo</th>
-                        <th>fLimite</th>
-                        <th>Regresado</th>
+                        <th>Fecha Prestamo</th>
+                        <th>Fecha Limite</th>
+                        <th>Estado</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -88,7 +88,7 @@
                         <td>{{ prestamo.codlib }}</td>
                         <td>{{ prestamo.fPrestamo  | date: 'EEEE, d MMMM yyyy' }}</td>
                         <td>{{ prestamo.fLimite  | date: 'EEEE, d MMMM yyyy' }}</td>
-                        <td>{{ prestamo.estado }}</td>
+                        <td>{{ prestamo.estado ? 'Devuelto' : 'No Devuelto' }}</td>
                     </tr>
                 </tbody>
             </table>

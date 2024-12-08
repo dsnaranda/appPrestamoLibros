@@ -51,7 +51,7 @@ export class PrestamosComponent {
       })
       .catch((error) => {
         console.error("Error al cargar las cédulas:", error);  // Manejo de errores
-    });
+      });
 
     cargarCodigo(this.http)
       .then((data) => {
@@ -60,17 +60,32 @@ export class PrestamosComponent {
       })
       .catch((error) => {
         console.error("Error al cargar los codigos:", error);  // Manejo de errores
-    });
+      });
   }
 
   addToList(): void {
     if (this.prestamoForm.valid) {
-      this.prestamosList.push(this.prestamoForm.value); // Añade el préstamo a la lista
+      const prestamo = { ...this.prestamoForm.value };
+  
+      // Sumar un día a la fecha límite antes de agregarla a la lista
+      if (prestamo.fLimite) {
+        const fechaLimite = new Date(prestamo.fLimite);
+        fechaLimite.setDate(fechaLimite.getDate() + 1);
+        prestamo.fLimite = fechaLimite.toISOString().split('T')[0];
+      }
+
+      if (prestamo.fPrestamo) {
+        const fechaPrestamo = new Date(prestamo.fPrestamo);
+        fechaPrestamo.setDate(fechaPrestamo.getDate() + 1);
+        prestamo.fPrestamo = fechaPrestamo.toISOString().split('T')[0];
+      }
+  
+      this.prestamosList.push(prestamo); // Añade el préstamo ajustado a la lista
     } else {
       alert('Por favor, completa los campos requeridos.');
     }
   }
-
+  
   submitList(): void {
     if (this.prestamosList.length > 0) {
       this.http.post('http://localhost:3000/api/addPrestamos', this.prestamosList)
