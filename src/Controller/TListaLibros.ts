@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Libro } from '../Entidades/Libros'; 
 
-
 export function cargarLibros(http: HttpClient): Promise<Libro[]> {
     return new Promise((resolve, reject) => {
         http.get<any[]>('http://localhost:3000/api/getLibros').subscribe(

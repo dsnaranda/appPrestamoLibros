@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { Prestamo } from '../../../Entidades/Prestamos';
-import { cargarPrestamos } from '../../../Controller/TListaPrestamos';
+import { cargarPrestamos, enviarPrestamos } from '../../../Controller/TListaPrestamos';
 import { cargarCedulasEstudiantes } from '../../../Controller/TListaEstudiantes';
 import { cargarCodigo } from '../../../Controller/TListaLibros';
 
@@ -88,17 +88,18 @@ export class PrestamosComponent {
   
   submitList(): void {
     if (this.prestamosList.length > 0) {
-      this.http.post('http://localhost:3000/api/addPrestamos', this.prestamosList)
-        .subscribe(response => {
-          console.log('Préstamos enviados:', response);
-          cargarPrestamos(this.http).then(
-            (data) => {
+      enviarPrestamos(this.http, this.prestamosList)
+        .then((response) => {
+          cargarPrestamos(this.http)
+            .then((data) => {
               this.prestamos = data;
-              console.log("Prestamos cargados:", this.prestamos);
-            }
-          );
+            })
+            .catch((error) => {
+              console.error("Error al cargar los préstamos:", error);
+            });
           this.prestamosList = [];
-        }, error => {
+        })
+        .catch((error) => {
           console.error('Error al enviar préstamos:', error);
         });
     }
