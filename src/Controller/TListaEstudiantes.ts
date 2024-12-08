@@ -58,13 +58,13 @@ export function cargarEstudiantesFalse(http: HttpClient): Promise<Estudiante[]> 
 
 export function agregarEstudiante(estudiante: Estudiante, http: HttpClient): Promise<Estudiante> {
     const apiUrl = 'http://localhost:3000/api/addEstudiantes';
-  
+
     return http.post<Estudiante>(apiUrl, estudiante)
-      .toPromise()
-      .then(response => {
-        if (!response) {
-          throw new Error('No se recibió estudiante desde el servidor');
-        }
-        return response;
-      });
-  }
+        .toPromise()
+        .then(response => {
+            if (!response) {
+                throw new Error('No se recibió estudiante desde el servidor');
+            }
+            return response;
+        });
+}

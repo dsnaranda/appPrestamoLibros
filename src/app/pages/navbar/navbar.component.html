@@ -1,8 +1,8 @@
 <div class="d-flex flex-column min-vh-100">
-    <!-- Barra de Navegación -->
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">MiAplicación</a>
+            <a class="navbar-brand">appPrestamoLibros</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -10,19 +10,22 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" routerLink="/nav/home">Estudiantes</a>
+                        <a class="nav-link" routerLink="/nav/estudiante">Estudiantes</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" routerLink="cursos">Cursos</a>
+                        <a class="nav-link" routerLink="/nav/libros">Libros</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" routerLink="profesores">Profesores</a>
+                        <a class="nav-link" routerLink="/nav/prestamos">Prestamos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/nav/devoluciones">Devoluciones</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
-    <!-- Contenedor Principal -->
+
     <div class="container flex-fill my-4">
         <router-outlet></router-outlet>
     </div>

@@ -1,1 +1,141 @@
-<p>libros works!</p>
+<div class="container-fluid d-flex">
+    <!-- Lado izquierdo que ocupa el 50% de la pantalla -->
+    <div class="col-4 mx-3">
+        <h2>Formulario Libro</h2>
+        <form [formGroup]="librosForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="codigo">Código:</label>
+                <input type="text" id="codigo" formControlName="codigo" class="form-control" />
+                <div *ngIf="librosForm.get('codigo')?.invalid && librosForm.get('codigo')?.touched" class="text-danger">
+                    Código es obligatorio.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="categoria">Categoría:</label>
+                <select id="categoria" formControlName="categoria" class="form-control">
+                    <option value="">Selecciona una categoría</option>
+                    <option *ngFor="let categoria of categorias" [value]="categoria">{{ categoria }}</option>
+                </select>
+                <div *ngIf="librosForm.get('categoria')?.invalid && librosForm.get('categoria')?.touched"
+                    class="text-danger">
+                    Categoría es obligatoria.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="editorial">Editorial:</label>
+                <input type="text" id="editorial" formControlName="editorial" class="form-control" />
+                <div *ngIf="librosForm.get('editorial')?.invalid && librosForm.get('editorial')?.touched"
+                    class="text-danger">
+                    Editorial es obligatoria.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="nombre">Nombre del libro:</label>
+                <input type="text" id="nombre" formControlName="nombre" class="form-control" />
+                <div *ngIf="librosForm.get('nombre')?.invalid && librosForm.get('nombre')?.touched" class="text-danger">
+                    Nombre es obligatorio.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="autor">Autor:</label>
+                <input type="text" id="autor" formControlName="autor" class="form-control" />
+                <div *ngIf="librosForm.get('autor')?.invalid && librosForm.get('autor')?.touched" class="text-danger">
+                    Autor es obligatorio.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="ano">Año:</label>
+                <input type="text" id="ano" formControlName="ano" class="form-control" />
+                <div *ngIf="librosForm.get('ano')?.invalid && librosForm.get('ano')?.touched" class="text-danger">
+                    Año es obligatorio y debe ser un valor de 4 dígitos.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="tipo">Tipo:</label>
+                <select id="tipo" formControlName="tipo" class="form-control">
+                    <option value="">Selecciona un tipo</option>
+                    <option *ngFor="let tipo of tipos" [value]="tipo">{{ tipo }}</option>
+                  </select>
+                <div *ngIf="librosForm.get('tipo')?.invalid && librosForm.get('tipo')?.touched" class="text-danger">
+                    Tipo es obligatorio.
+                </div>
+            </div>
+
+            <div class="form-group form-check">
+                <input type="checkbox" id="estado" formControlName="estado" class="form-check-input" />
+                <label for="estado" class="form-check-label">Disponible</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary" [disabled]="librosForm.invalid">Agregar Libro</button>
+        </form>
+
+    </div>
+
+    <div class="col-8 d-flex flex-column align-items-center mx-3">
+
+        <div class="table-responsive mb-4" style="width: 100%;">
+            <h2>Lista de libros</h2>
+            <table class="table table-bordered table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Codigo</th>
+                        <th>Categoria</th>
+                        <th>Editorial</th>
+                        <th>Nombre</th>
+                        <th>Autor</th>
+                        <th>Año</th>
+                        <th>Tipo</th>
+                        <th>Disponible</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let ejemplar of libros">
+                        <td>{{ ejemplar.codigo }}</td>
+                        <td>{{ ejemplar.categoria }}</td>
+                        <td>{{ ejemplar.editorial }}</td>
+                        <td>{{ ejemplar.nombre }}</td>
+                        <td>{{ ejemplar.autor }}</td>
+                        <td>{{ ejemplar.ano }}</td>
+                        <td>{{ ejemplar.tipo }}</td>
+                        <td>{{ ejemplar.estado }}</td>
+                        <td>
+                            <div class="d-flex justify-content-start gap-2">
+                                <button class="btn btn-primary btn-sm d-flex align-items-center justify-content-center"
+                                    style="width: 40px; height: 40px;" (click)="modificarLibro(ejemplar._id)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="20" height="20">
+                                        <polygon points="16,48 48,16 56,24 24,56" fill="#F4A261" />
+                                        <polygon points="16,48 20,52 4,60 12,44" fill="#2A9D8F" />
+                                        <line x1="16" y1="48" x2="48" y2="16" stroke="#264653" stroke-width="2" />
+                                        <rect x="44" y="20" width="8" height="4" fill="#E76F51" />
+                                    </svg>
+                                </button>
+                                <button class="btn btn-danger btn-sm d-flex align-items-center justify-content-center"
+                                    style="width: 40px; height: 40px;" (click)="eliminarLibro(ejemplar._id)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="20" height="20">
+                                        <rect x="16" y="6" width="32" height="6" rx="1" ry="1" fill="#A9A9A9" />
+                                        <rect x="20" y="12" width="24" height="40" rx="4" ry="4" fill="#B0B0B0" />
+                                        <line x1="25" y1="14" x2="25" y2="50" stroke="#888" stroke-width="2" />
+                                        <line x1="32" y1="14" x2="32" y2="50" stroke="#888" stroke-width="2" />
+                                        <line x1="39" y1="14" x2="39" y2="50" stroke="#888" stroke-width="2" />
+                                        <rect x="16" y="20" width="4" height="20" rx="1" ry="1" fill="#888" />
+                                        <rect x="44" y="20" width="4" height="20" rx="1" ry="1" fill="#888" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+</div>
