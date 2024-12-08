@@ -293,6 +293,28 @@ app.get("/api/getDevoluciones", async (req, res) => {
     }
 });
 
+const añadirDevolucion = async (nuevaDevolucion) => {
+    try {
+        const database = await getConenection(); 
+        const devolucionesCollection = database.collection("Devoluciones"); 
+        const resultDevolucion = await devolucionesCollection.insertOne(nuevaDevolucion);
+        return resultDevolucion; 
+    } catch (error) {
+        console.error("Error al añadir la devolución:", error);
+        throw error;
+    }
+};
+
+// Ruta para añadir una nueva devolución
+app.post("/api/addDevoluciones", async (req, res) => {
+    try {
+        const nuevaDevolucion = req.body; // Obtén los datos de la devolución desde el cuerpo de la solicitud
+        const result = await añadirDevolucion(nuevaDevolucion); // Llama a la función para añadir la devolución
+        res.status(201).json({ message: "Devolución añadida correctamente", result }); // Responde con un mensaje de éxito
+    } catch (error) {
+        res.status(500).json({ error: "Error al añadir la devolución" }); // Responde con un mensaje de error
+    }
+});
 
 
 
