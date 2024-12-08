@@ -117,7 +117,7 @@ const getLibrosDisponibles = async () => {
         return usuarios;
     } catch (error) {
         console.error("Error al obtener los libros:", error);
-        throw error; 
+        throw error;
     }
 };
 
@@ -293,14 +293,47 @@ app.get("/api/getDevoluciones", async (req, res) => {
     }
 });
 
+
+
 const añadirDevolucion = async (nuevaDevolucion) => {
     try {
-        const database = await getConenection(); 
-        const devolucionesCollection = database.collection("Devoluciones"); 
+        const database = await getConenection();
+        const devolucionesCollection = database.collection("Devoluciones");
+        const prestamosCollection = database.collection("Prestamos"); // Accede a la colección "Prestamos"
+        const librosCollection = database.collection("Libros"); // Accede a la colección "Libros"
+
+        // Inserta la nueva devolución en la colección "Devoluciones"
         const resultDevolucion = await devolucionesCollection.insertOne(nuevaDevolucion);
-        return resultDevolucion; 
+
+        // Actualiza el estado del préstamo en la colección "Prestamos"
+        const resultPrestamo = await prestamosCollection.updateOne(
+            { codigo: nuevaDevolucion.codPrestamo }, // Busca el préstamo por "codigo" (igual al "codPrestamo")
+            { $set: { estado: true } } // Cambia el "estado" a true
+        );
+
+        // Ahora, vamos a tomar el "codlib" del préstamo actualizado
+        const prestamoActualizado = await prestamosCollection.findOne({ codigo: nuevaDevolucion.codPrestamo });
+
+        if (prestamoActualizado && prestamoActualizado.codlib) {
+            const codlib = prestamoActualizado.codlib; // Obtén el "codlib" de Prestamos
+
+            // Comparar el "codlib" con el "codigo" en la colección "Libros"
+            const resultLibro = await librosCollection.updateOne(
+                { codigo: codlib }, // Buscar el libro con "codigo" igual a "codlib"
+                { $set: { estado: true } } // Cambiar el "estado" del libro a true
+            );
+
+            if (resultLibro.modifiedCount === 0) {
+                console.error("No se encontró el libro con el código:", codlib);
+            } else {
+                console.log("Libro actualizado correctamente:", codlib);
+            }
+        }
+
+        // Retorna los resultados de las tres operaciones: devolución, préstamo y libro
+        return { resultDevolucion, resultPrestamo };
     } catch (error) {
-        console.error("Error al añadir la devolución:", error);
+        console.error("Error al añadir la devolución, actualizar el préstamo o el libro:", error);
         throw error;
     }
 };
@@ -309,10 +342,16 @@ const añadirDevolucion = async (nuevaDevolucion) => {
 app.post("/api/addDevoluciones", async (req, res) => {
     try {
         const nuevaDevolucion = req.body; // Obtén los datos de la devolución desde el cuerpo de la solicitud
-        const result = await añadirDevolucion(nuevaDevolucion); // Llama a la función para añadir la devolución
-        res.status(201).json({ message: "Devolución añadida correctamente", result }); // Responde con un mensaje de éxito
+        const { resultDevolucion, resultPrestamo } = await añadirDevolucion(nuevaDevolucion); // Llama a la función para añadir la devolución y actualizar el préstamo
+
+        // Responde con un mensaje de éxito
+        res.status(201).json({
+            message: "Devolución añadida correctamente, préstamo actualizado y libro actualizado",
+            resultDevolucion,
+            resultPrestamo
+        });
     } catch (error) {
-        res.status(500).json({ error: "Error al añadir la devolución" }); // Responde con un mensaje de error
+        res.status(500).json({ error: "Error al añadir la devolución o actualizar el préstamo o el libro" });
     }
 });
 

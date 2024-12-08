@@ -33,16 +33,15 @@ export function cargarCodigosPrestamo(http: HttpClient): Promise<string[]> {
     return new Promise((resolve, reject) => {
         http.get<any[]>('http://localhost:3000/api/getPrestamos').subscribe(
             (data) => {
-                // Extrae solo las cédulas de los estudiantes
-                const codigos = data.map(item => item.codigo);
+                // Filtra los préstamos cuyo estado es false y extrae solo los códigos
+                const codigos = data.filter(item => item.estado === false).map(item => item.codigo);
                 resolve(codigos);
             },
             (error) => {
-                console.error("Error al cargar los codigos de los prestamos:", error);
+                console.error("Error al cargar los códigos de los préstamos:", error);
                 reject(error);
             }
         );
     });
 }
-
 
