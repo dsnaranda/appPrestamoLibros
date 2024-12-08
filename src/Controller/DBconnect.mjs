@@ -121,6 +121,26 @@ app.get("/api/getLibros", async (req, res) => {
     }
 });
 
+const getLibrosDisponibles = async () => {
+    try {
+        const database = await getConenection();
+        const usuarios = await database.collection("Libros").find({ estado: true }).toArray();
+        return usuarios;
+    } catch (error) {
+        console.error("Error al obtener los libros:", error);
+        throw error; 
+    }
+};
+
+app.get("/api/getLibrosDisponibles", async (req, res) => {
+    try {
+        const usuarios = await getLibrosDisponibles();
+        res.status(200).json(usuarios);
+    } catch (error) {
+        res.status(500).json({ error: "Error al obtener los usuarios" });
+    }
+});
+
 const deleteLibro = async (id) => {
     try {
         const database = await getConenection();
@@ -169,8 +189,8 @@ const updateLibro = async (id, libroActualizado) => {
 };
 
 app.put("/api/updateLibro/:id", async (req, res) => {
-    const { id } = req.params; 
-    const libroActualizado = req.body; 
+    const { id } = req.params;
+    const libroActualizado = req.body;
 
     try {
         await updateLibro(id, libroActualizado);
@@ -203,6 +223,65 @@ app.post("/api/addLibro", async (req, res) => {
     }
 });
 
+const añadirPrestamo = async (nuevoPrestamos) => {
+    try {
+        const database = await getConenection(); // Obtiene la conexión a la base de datos
+        const prestamosArray = Array.isArray(nuevoPrestamos) ? nuevoPrestamos : [nuevoPrestamos];
+
+        // Inserta los préstamos en la colección "Prestamos"
+        const result = await database.collection("Prestamos").insertMany(prestamosArray);
+
+        // Actualiza el estado en la colección "Libros" para cada préstamo añadido
+        for (const prestamo of prestamosArray) {
+            if (prestamo.codlib) {
+                await database.collection("Libros").updateOne(
+                    { codigo: prestamo.codlib }, // Busca el libro por su código
+                    { $set: { estado: false } } // Cambia el estado a false
+                );
+            }
+        }
+
+        return result; // Retorna el resultado de la inserción
+    } catch (error) {
+        console.error("Error al añadir el préstamo:", error);
+        throw error; // Lanza el error para ser capturado en la ruta
+    }
+};
+
+// Ruta para añadir uno o varios préstamos
+app.post("/api/addPrestamos", async (req, res) => {
+    try {
+        const nuevoPrestamos = req.body; // Obtén los datos del préstamo desde el cuerpo de la solicitud
+        const result = await añadirPrestamo(nuevoPrestamos); // Llama a la función para añadir el préstamo
+        res.status(201).json({ message: "Préstamo(s) añadido(s) correctamente", result }); // Responde con un mensaje de éxito
+    } catch (error) {
+        res.status(500).json({ error: "Error al añadir el préstamo" }); // Responde con un mensaje de error
+    }
+});
+
+
+
+const getPrestamos = async () => {
+    try {
+        const database = await getConenection();
+        const usuarios = await database.collection("Prestamos").find().toArray(); // Filtra los estudiantes cuyo estado sea true
+        return usuarios; // Retorna solo los usuarios cuyo estado es true
+    } catch (error) {
+        console.error("Error al obtener los usuarios:", error);
+        throw error; // Lanza el error para ser capturado en la ruta
+    }
+};
+
+
+// Ruta para obtener usuarios
+app.get("/api/getPrestamos", async (req, res) => {
+    try {
+        const usuarios = await getPrestamos();
+        res.status(200).json(usuarios);
+    } catch (error) {
+        res.status(500).json({ error: "Error al obtener los usuarios" });
+    }
+});
 
 // Inicia el servidor
 app.listen(PORT, () => {

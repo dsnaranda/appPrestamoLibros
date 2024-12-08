@@ -28,6 +28,21 @@ export function cargarEstudiantesTrue(http: HttpClient): Promise<Estudiante[]> {
     });
 }
 
+export function cargarCedulasEstudiantes(http: HttpClient): Promise<string[]> {
+    return new Promise((resolve, reject) => {
+        http.get<any[]>('http://localhost:3000/api/usuariosvalidos').subscribe(
+            (data) => {
+                // Extrae solo las cédulas de los estudiantes
+                const cedulas = data.map(item => item.cedula);
+                resolve(cedulas);
+            },
+            (error) => {
+                console.error("Error al cargar las cédulas de los estudiantes:", error);
+                reject(error);
+            }
+        );
+    });
+}
 
 
 export function cargarEstudiantesFalse(http: HttpClient): Promise<Estudiante[]> {

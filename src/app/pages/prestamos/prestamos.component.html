@@ -1,1 +1,93 @@
-<p>prestamos works!</p>
+<div class="container-fluid d-flex">
+    <!-- Lado izquierdo que ocupa el 50% de la pantalla -->
+    <div class="col-4 mx-3">
+        <h2>Formulario Prestamos</h2>
+        <form [formGroup]="prestamoForm" (ngSubmit)="onSubmit()">
+
+            <div class="form-group">
+                <label for="codigo">Codigo:</label>
+                <input id="codigo" formControlName="codigo" class="form-control" type="text" />
+                <div *ngIf="prestamoForm.get('codigo')?.invalid && prestamoForm.get('codigo')?.touched"
+                    class="text-danger">
+                    El codigo es obligatorio.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="cedula">Cédula:</label>
+                <select id="cedula" formControlName="cedula" class="form-control">
+                    <option value="">Selecciona una cédula</option>
+                    <option *ngFor="let cedula of cedulas" [value]="cedula">{{ cedula }}</option>
+                </select>
+                <div *ngIf="prestamoForm.get('cedula')?.invalid && prestamoForm.get('cedula')?.touched"
+                    class="text-danger">
+                    La cédula es obligatoria y debe tener 10 dígitos.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="codlib">Codigo de libro:</label>
+                <select id="codlib" formControlName="codlib" class="form-control">
+                    <option value="">Seleccione un libro</option>
+                    <option *ngFor="let codigo of codigos" [value]="codigo">{{ codigo }}</option>
+                </select>
+                <div *ngIf="prestamoForm.get('codlib')?.invalid && prestamoForm.get('codlib')?.touched"
+                    class="text-danger">
+                    El codigo de libro es obligatorio.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="fPrestamo">Fecha de prestamo:</label>
+                <input id="fPrestamo" formControlName="fPrestamo" class="form-control" type="date" readonly  />
+                <div *ngIf="prestamoForm.get('fPrestamo')?.invalid && prestamoForm.get('fPrestamo')?.touched"
+                class="text-danger">
+                La cédula es obligatoria y debe tener 10 dígitos.
+            </div>
+            </div>
+
+            <div class="form-group">
+                <label for="fLimite">Fecha de limite:</label>
+                <input id="fLimite" formControlName="fLimite" class="form-control" type="date" />
+                <div *ngIf="prestamoForm.get('fLimite')?.invalid && prestamoForm.get('fLimite')?.touched"
+                    class="text-danger">
+                    La fecha de nacimiento es obligatoria.
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-dark" [disabled]="prestamoForm.invalid">Agregar
+                Prestamo</button>
+        </form>
+
+
+    </div>
+
+    <div class="col-8 d-flex flex-column align-items-center mx-3">
+        <!-- Primera tabla -->
+        <div class="table-responsive mb-4" style="width: 100%;">
+            <h2>Usuarios permitidos a prestamos</h2>
+            <table class="table table-bordered table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Codigo</th>
+                        <th>Cedula</th>
+                        <th>Codlib</th>
+                        <th>fPrestamo</th>
+                        <th>fLimite</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let prestamo of prestamos">
+                        <td>{{ prestamo.codigo }}</td>
+                        <td>{{ prestamo.cedula }}</td>
+                        <td>{{ prestamo.codlib }}</td>
+                        <td>{{ prestamo.fPrestamo }}</td>
+                        <td>{{ prestamo.fLimite }}</td>
+                        <td>{{ prestamo.estado }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

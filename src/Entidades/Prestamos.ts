@@ -14,8 +14,4 @@ export class Prestamo {
         this.fLimite = fLim;
         this.estado = est;
     }
-
-    estadoFalse(): void {
-        this.estado = false;
-    }
 }
