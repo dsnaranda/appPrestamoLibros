@@ -294,13 +294,13 @@ app.get("/api/getDevoluciones", async (req, res) => {
 });
 
 
-
 const añadirDevolucion = async (nuevaDevolucion) => {
     try {
         const database = await getConenection();
         const devolucionesCollection = database.collection("Devoluciones");
         const prestamosCollection = database.collection("Prestamos"); // Accede a la colección "Prestamos"
         const librosCollection = database.collection("Libros"); // Accede a la colección "Libros"
+        const estudiantesCollection = database.collection("Estudiantes"); // Accede a la colección "Estudiantes"
 
         // Inserta la nueva devolución en la colección "Devoluciones"
         const resultDevolucion = await devolucionesCollection.insertOne(nuevaDevolucion);
@@ -330,10 +330,39 @@ const añadirDevolucion = async (nuevaDevolucion) => {
             }
         }
 
-        // Retorna los resultados de las tres operaciones: devolución, préstamo y libro
+        // Comparar las fechas de devolución y fecha límite
+        const devolucion = await devolucionesCollection.findOne({ _id: resultDevolucion.insertedId });
+        const prestamo = await prestamosCollection.findOne({ codigo: nuevaDevolucion.codPrestamo });
+
+        if (devolucion && prestamo) {
+            const fDevolucion = new Date(devolucion.fDevolucion); // Convierte la fecha de devolución a tipo Date
+            const fLimite = new Date(prestamo.fLimite); // Convierte la fecha límite a tipo Date
+
+            console.log("Fecha Devolución:", fDevolucion);
+            console.log("Fecha Límite:", fLimite);
+
+            // Si la fecha de devolución es posterior a la fecha límite, actualizar Estudiantes
+            if (fDevolucion > fLimite) {
+                const cedulaEstudiante = prestamo.cedula; // Obtiene la cédula del estudiante
+
+                // Busca el estudiante por su cédula
+                const resultEstudiante = await estudiantesCollection.updateOne(
+                    { cedula: cedulaEstudiante }, // Buscar al estudiante por cédula
+                    { $set: { estado: false } } // Actualiza el estado del estudiante a false
+                );
+
+                if (resultEstudiante.modifiedCount === 0) {
+                    console.error("No se encontró el estudiante con la cédula:", cedulaEstudiante);
+                } else {
+                    console.log("Estado del estudiante actualizado correctamente:", cedulaEstudiante);
+                }
+            }
+        }
+
+        // Retorna los resultados de las tres operaciones: devolución, préstamo, libro y estudiante
         return { resultDevolucion, resultPrestamo };
     } catch (error) {
-        console.error("Error al añadir la devolución, actualizar el préstamo o el libro:", error);
+        console.error("Error al añadir la devolución, actualizar el préstamo, libro o estudiante:", error);
         throw error;
     }
 };
@@ -346,14 +375,15 @@ app.post("/api/addDevoluciones", async (req, res) => {
 
         // Responde con un mensaje de éxito
         res.status(201).json({
-            message: "Devolución añadida correctamente, préstamo actualizado y libro actualizado",
+            message: "Devolución añadida correctamente, préstamo actualizado, libro actualizado y estudiante actualizado si es necesario",
             resultDevolucion,
             resultPrestamo
         });
     } catch (error) {
-        res.status(500).json({ error: "Error al añadir la devolución o actualizar el préstamo o el libro" });
+        res.status(500).json({ error: "Error al añadir la devolución o actualizar el préstamo, libro o estudiante" });
     }
 });
+
 
 
 
