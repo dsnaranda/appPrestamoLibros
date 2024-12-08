@@ -2,8 +2,7 @@
     <!-- Lado izquierdo que ocupa el 50% de la pantalla -->
     <div class="col-4 mx-3">
         <h2>Formulario Prestamos</h2>
-        <form [formGroup]="prestamoForm" (ngSubmit)="onSubmit()">
-
+        <form [formGroup]="prestamoForm" (ngSubmit)="addToList()">
             <div class="form-group">
                 <label for="codigo">Codigo:</label>
                 <input id="codigo" formControlName="codigo" class="form-control" type="text" />
@@ -21,7 +20,7 @@
                 </select>
                 <div *ngIf="prestamoForm.get('cedula')?.invalid && prestamoForm.get('cedula')?.touched"
                     class="text-danger">
-                    La cédula es obligatoria y debe tener 10 dígitos.
+                    La cédula es obligatoria.
                 </div>
             </div>
 
@@ -39,11 +38,7 @@
 
             <div class="form-group">
                 <label for="fPrestamo">Fecha de prestamo:</label>
-                <input id="fPrestamo" formControlName="fPrestamo" class="form-control" type="date" readonly  />
-                <div *ngIf="prestamoForm.get('fPrestamo')?.invalid && prestamoForm.get('fPrestamo')?.touched"
-                class="text-danger">
-                La cédula es obligatoria y debe tener 10 dígitos.
-            </div>
+                <input id="fPrestamo" formControlName="fPrestamo" class="form-control" type="date" />
             </div>
 
             <div class="form-group">
@@ -51,16 +46,25 @@
                 <input id="fLimite" formControlName="fLimite" class="form-control" type="date" />
                 <div *ngIf="prestamoForm.get('fLimite')?.invalid && prestamoForm.get('fLimite')?.touched"
                     class="text-danger">
-                    La fecha de nacimiento es obligatoria.
+                    La cédula es obligatoria.
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-dark" [disabled]="prestamoForm.invalid">Agregar
-                Prestamo</button>
+            <button type="button" class="btn btn-primary" (click)="addToList()">Añadir a la lista</button>
+            <button type="button" class="btn btn-dark" [disabled]="prestamosList.length === 0"
+                (click)="submitList()">Enviar todos</button>
         </form>
 
-
+        <div class="mt-4">
+            <h3>Lista de Préstamos para enviar:</h3>
+            <ul>
+                <li *ngFor="let prestamo of prestamosList">
+                    {{ prestamo.codigo }} - {{ prestamo.cedula }} - {{ prestamo.codlib }}
+                </li>
+            </ul>
+        </div>
     </div>
+
 
     <div class="col-8 d-flex flex-column align-items-center mx-3">
         <!-- Primera tabla -->
@@ -74,7 +78,7 @@
                         <th>Codlib</th>
                         <th>fPrestamo</th>
                         <th>fLimite</th>
-                        <th>Estado</th>
+                        <th>Regresado</th>
                     </tr>
                 </thead>
                 <tbody>

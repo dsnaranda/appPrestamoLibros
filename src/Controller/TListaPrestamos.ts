@@ -27,3 +27,22 @@ export function cargarPrestamos(http: HttpClient): Promise<Prestamo[]> {
         );
     });
 }
+
+
+export function cargarCodigosPrestamo(http: HttpClient): Promise<string[]> {
+    return new Promise((resolve, reject) => {
+        http.get<any[]>('http://localhost:3000/api/getPrestamos').subscribe(
+            (data) => {
+                // Extrae solo las cédulas de los estudiantes
+                const codigos = data.map(item => item.codigo);
+                resolve(codigos);
+            },
+            (error) => {
+                console.error("Error al cargar los codigos de los prestamos:", error);
+                reject(error);
+            }
+        );
+    });
+}
+
+

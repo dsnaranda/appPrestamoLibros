@@ -18,20 +18,21 @@ export class PrestamosComponent {
   prestamos: Prestamo[] = [];
   cedulas: string[] = [];
   codigos: string[] = [];
+  prestamosList: any[] = [];
   prestamoForm: FormGroup;
 
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
     const hoy = new Date();
     const fechaActual = `${hoy.getFullYear()}-${(hoy.getMonth() + 1).toString().padStart(2, '0')}-${hoy.getDate().toString().padStart(2, '0')}`;
-  
+
     this.prestamoForm = this.fb.group({
       codigo: ['', Validators.required],
       cedula: ['', Validators.required],
       codlib: ['', Validators.required],
       fPrestamo: [fechaActual, Validators.required],
       fLimite: ['', Validators.required],
-      estado: [false, Validators.required]
+      estado: false
     });
   }
 
@@ -42,7 +43,7 @@ export class PrestamosComponent {
         console.log("Prestamos cargados:", this.prestamos);
       }
     );
-    
+
     cargarCedulasEstudiantes(this.http)
       .then((data) => {
         this.cedulas = data;  // Asigna las cédulas obtenidas a la propiedad 'cedulas'
@@ -50,7 +51,7 @@ export class PrestamosComponent {
       })
       .catch((error) => {
         console.error("Error al cargar las cédulas:", error);  // Manejo de errores
-      });
+    });
 
     cargarCodigo(this.http)
       .then((data) => {
@@ -59,25 +60,32 @@ export class PrestamosComponent {
       })
       .catch((error) => {
         console.error("Error al cargar los codigos:", error);  // Manejo de errores
-      });
+    });
   }
 
-  // Función para enviar los datos del formulario
-  onSubmit(): void {
+  addToList(): void {
     if (this.prestamoForm.valid) {
-      this.http.post('http://localhost:3000/api/addPrestamos', this.prestamoForm.value)
-        .subscribe(response => {
-          console.log('Prestamo agregado', response);
-          cargarPrestamos(this.http).then(
-            (data) => {
-              this.prestamos = data;
-              console.log("Prestamo cargados:", this.prestamos);
-            }
-          );
-        }, error => {
-          console.error('Error al agregar prestamo', error);
-        });
+      this.prestamosList.push(this.prestamoForm.value); // Añade el préstamo a la lista
+    } else {
+      alert('Por favor, completa los campos requeridos.');
     }
   }
 
+  submitList(): void {
+    if (this.prestamosList.length > 0) {
+      this.http.post('http://localhost:3000/api/addPrestamos', this.prestamosList)
+        .subscribe(response => {
+          console.log('Préstamos enviados:', response);
+          cargarPrestamos(this.http).then(
+            (data) => {
+              this.prestamos = data;
+              console.log("Prestamos cargados:", this.prestamos);
+            }
+          );
+          this.prestamosList = [];
+        }, error => {
+          console.error('Error al enviar préstamos:', error);
+        });
+    }
+  }
 }

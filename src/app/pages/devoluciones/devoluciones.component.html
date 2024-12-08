@@ -1,1 +1,61 @@
-<p>devoluciones works!</p>
+<div class="container-fluid d-flex">
+    <!-- Lado izquierdo que ocupa el 50% de la pantalla -->
+    <div class="col-4 mx-3">
+        <h2>Formulario Devolución</h2>
+        <form [formGroup]="devolucionesForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="codigo">Código:</label>
+            <input id="codigo" formControlName="codigo" class="form-control" type="text" />
+            <div *ngIf="devolucionesForm.get('codigo')?.invalid && devolucionesForm.get('codigo')?.touched" class="text-danger">
+              El código es obligatorio.
+            </div>
+          </div>
+      
+          <div class="form-group">
+            <label for="codPrestamo">Código de préstamo:</label>
+            <select id="codPrestamo" formControlName="codPrestamo" class="form-control">
+              <option value="">Seleccione un préstamo</option>
+              <option *ngFor="let codigo of codigos" [value]="codigo">{{ codigo }}</option>
+            </select>
+            <div *ngIf="devolucionesForm.get('codPrestamo')?.invalid && devolucionesForm.get('codPrestamo')?.touched" class="text-danger">
+              El código de préstamo es obligatorio.
+            </div>
+          </div>
+      
+          <div class="form-group">
+            <label for="fDevolucion">Fecha de devolución:</label>
+            <input id="fDevolucion" formControlName="fDevolucion" class="form-control" type="date" />
+            <div *ngIf="devolucionesForm.get('fDevolucion')?.invalid && devolucionesForm.get('fDevolucion')?.touched" class="text-danger">
+              La fecha de devolución es obligatoria.
+            </div>
+          </div>
+      
+          <button type="submit" class="btn btn-dark mt-2" [disabled]="devolucionesForm.invalid">Agregar Devolución</button>
+        </form>
+      </div>
+      
+
+    <div class="col-8 d-flex flex-column align-items-center mx-3">
+
+        <div class="table-responsive mb-4" style="width: 100%;">
+            <h2>Usuarios permitidos a prestamos</h2>
+            <table class="table table-bordered table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Codigo</th>
+                        <th>CodPrestamo</th>
+                        <th>fDevolucion</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let devolucion of devoluciones">
+                        <td>{{ devolucion.codigo }}</td>
+                        <td>{{ devolucion.codPrestamo }}</td>
+                        <td>{{ devolucion.fDevolucion }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

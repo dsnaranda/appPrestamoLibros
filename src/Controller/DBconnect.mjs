@@ -90,17 +90,6 @@ app.post("/api/addEstudiantes", async (req, res) => {
 });
 
 
-// Ruta para obtener usuarios
-app.get("/api/usuariosvalidos", async (req, res) => {
-    try {
-        const usuarios = await getEstudiantesTrue();
-        res.status(200).json(usuarios);
-    } catch (error) {
-        res.status(500).json({ error: "Error al obtener los usuarios" });
-    }
-});
-
-
 const getLibros = async () => {
     try {
         const database = await getConenection();
@@ -282,6 +271,30 @@ app.get("/api/getPrestamos", async (req, res) => {
         res.status(500).json({ error: "Error al obtener los usuarios" });
     }
 });
+
+const getDevoluciones = async () => {
+    try {
+        const database = await getConenection(); // Establece la conexión a la base de datos
+        const devoluciones = await database.collection("Devoluciones").find().toArray(); // Obtiene todos los registros de la colección "Devoluciones"
+        return devoluciones; // Retorna el resultado
+    } catch (error) {
+        console.error("Error al obtener las devoluciones:", error);
+        throw error; // Lanza el error para ser capturado en la ruta
+    }
+};
+
+// Endpoint para obtener las devoluciones
+app.get("/api/getDevoluciones", async (req, res) => {
+    try {
+        const devoluciones = await getDevoluciones(); // Llama a la función para obtener las devoluciones
+        res.status(200).json(devoluciones); // Devuelve los datos como respuesta en formato JSON
+    } catch (error) {
+        res.status(500).json({ error: "Error al obtener las devoluciones" }); // Maneja errores con un mensaje adecuado
+    }
+});
+
+
+
 
 // Inicia el servidor
 app.listen(PORT, () => {
