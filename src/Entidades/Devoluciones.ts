@@ -1,4 +1,4 @@
-export class Devolucion {
+export class Devoluciones {
     codigo: string;
     codPrestamo:string;
     fDevolucion: Date;

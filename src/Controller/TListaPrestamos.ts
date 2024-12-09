@@ -9,10 +9,6 @@ export function enviarPrestamos(http: HttpClient, prestamosList: any[]): Promise
                     console.log('Préstamos enviados:', response);
                     resolve(response);
                 },
-                (error) => {
-                    console.error('Error al enviar préstamos:', error);
-                    reject(error);
-                }
             );
     });
 }
@@ -35,10 +31,6 @@ export function cargarPrestamos(http: HttpClient): Promise<Prestamo[]> {
                 );
                 resolve(prestamos);
             },
-            (error) => {
-                console.error("Error al cargar los libros:", error);
-                reject(error);
-            }
         );
     });
 }
@@ -52,10 +44,6 @@ export function cargarCodigosPrestamo(http: HttpClient): Promise<string[]> {
                 const codigos = data.filter(item => item.estado === false).map(item => item.codigo);
                 resolve(codigos);
             },
-            (error) => {
-                console.error("Error al cargar los códigos de los préstamos:", error);
-                reject(error);
-            }
         );
     });
 }

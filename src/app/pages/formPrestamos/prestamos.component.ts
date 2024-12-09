@@ -46,28 +46,20 @@ export class PrestamosComponent {
 
     cargarCedulasEstudiantes(this.http)
       .then((data) => {
-        this.cedulas = data;  // Asigna las cédulas obtenidas a la propiedad 'cedulas'
-        console.log("Cedulas cargadas:", this.cedulas);  // Muestra las cédulas en consola para verificar
+        this.cedulas = data;  
       })
-      .catch((error) => {
-        console.error("Error al cargar las cédulas:", error);  // Manejo de errores
-      });
 
     cargarCodigo(this.http)
       .then((data) => {
-        this.codigos = data;  // Asigna las cédulas obtenidas a la propiedad 'cedulas'
-        console.log("Codigos cargadas:", this.codigos);  // Muestra las cédulas en consola para verificar
+        this.codigos = data;  
       })
-      .catch((error) => {
-        console.error("Error al cargar los codigos:", error);  // Manejo de errores
-      });
+
   }
 
   addToList(): void {
     if (this.prestamoForm.valid) {
       const prestamo = { ...this.prestamoForm.value };
   
-      // Sumar un día a la fecha límite antes de agregarla a la lista
       if (prestamo.fLimite) {
         const fechaLimite = new Date(prestamo.fLimite);
         fechaLimite.setDate(fechaLimite.getDate() + 1);
@@ -80,7 +72,7 @@ export class PrestamosComponent {
         prestamo.fPrestamo = fechaPrestamo.toISOString().split('T')[0];
       }
   
-      this.prestamosList.push(prestamo); // Añade el préstamo ajustado a la lista
+      this.prestamosList.push(prestamo); 
     } else {
       alert('Por favor, completa los campos requeridos.');
     }
@@ -99,9 +91,6 @@ export class PrestamosComponent {
             });
           this.prestamosList = [];
         })
-        .catch((error) => {
-          console.error('Error al enviar préstamos:', error);
-        });
     }
   }
 }

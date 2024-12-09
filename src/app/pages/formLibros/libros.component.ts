@@ -28,7 +28,7 @@ export class LibrosComponent implements OnInit {
       editorial: ['', Validators.required],
       nombre: ['', Validators.required],
       autor: ['', Validators.required],
-      ano: ['', [Validators.required, Validators.pattern(/^[0-9]{4}$/)]], // Validación de año
+      ano: ['', [Validators.required, Validators.pattern(/^[0-9]{4}$/)]],
       tipo: ['', Validators.required],
       estado: [true, Validators.required]
     });
@@ -55,12 +55,8 @@ export class LibrosComponent implements OnInit {
           }
         );
       })
-      .catch((error) => {
-        console.error("Error al intentar eliminar el libro:", error);
-      });
   }
 
-  // Función para cargar los datos de un libro en el formulario para editar
   editarLibro(id: string): void {
     const libro = this.libros.find(libro => libro._id === id);
     if (libro) {
@@ -78,11 +74,9 @@ export class LibrosComponent implements OnInit {
     }
   }
   
-  // Función para enviar los datos del formulario (Agregar o editar libro)
   onSubmit(): void {
     if (this.librosForm.valid) {
       if (this.idEditar) {
-        // Editar libro
         this.http.put(`http://localhost:3000/api/updateLibro/${this.idEditar}`, this.librosForm.value)
           .subscribe(
             (response) => {
@@ -94,13 +88,9 @@ export class LibrosComponent implements OnInit {
               this.librosForm.reset({
                 estado: true
               });
-            },
-            (error) => {
-              console.error('Error al editar el libro', error);
             }
           );
       } else {
-        // Agregar libro
         this.http.post('http://localhost:3000/api/addLibro', this.librosForm.value)
           .subscribe(
             (response) => {
@@ -112,9 +102,6 @@ export class LibrosComponent implements OnInit {
               this.librosForm.reset({
                 estado: true
               });
-            },
-            (error) => {
-              console.error('Error al agregar libro', error);
             }
           );
       }
@@ -127,7 +114,6 @@ export class LibrosComponent implements OnInit {
     const libroAEditar = this.libros.find(libro => libro._id === id);
 
     if (libroAEditar) {
-      // Rellenar el formulario con los datos del libro
       this.librosForm.patchValue({
         codigo: libroAEditar.codigo,
         categoria: libroAEditar.categoria,
@@ -139,15 +125,16 @@ export class LibrosComponent implements OnInit {
         estado: libroAEditar.estado
       });
 
-      // Establecer id para usarlo en el submit
       this.idEditar = libroAEditar._id;  // Guardamos el ID para el submit
     }
   }
 
 
-  // Función para crear un nuevo libro y restablecer el formulario
   crearNuevoLibro(): void {
     this.idEditar = null;
+    this.librosForm.reset({
+      estado: true
+    });
   }
 
 }

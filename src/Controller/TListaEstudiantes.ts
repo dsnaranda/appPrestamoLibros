@@ -7,10 +7,6 @@ export function agregarEstudiante(http: HttpClient, estudiante: Estudiante): Pro
             (response) => {
                 resolve(response);
             },
-            (error) => {
-                console.error('Error al agregar estudiante', error);
-                reject(error);
-            }
         );
     });
 }
@@ -33,10 +29,6 @@ export function cargarEstudiantesTrue(http: HttpClient): Promise<Estudiante[]> {
                 );
                 resolve(estudiantes);
             },
-            (error) => {
-                console.error("Error al cargar los estudiantes:", error);
-                reject(error);
-            }
         );
     });
 }
@@ -60,10 +52,6 @@ export function cargarEstudiantesFalse(http: HttpClient): Promise<Estudiante[]> 
                 );
                 resolve(estudiantes);
             },
-            (error) => {
-                console.error("Error al cargar los estudiantes:", error);
-                reject(error);
-            }
         );
     });
 }
@@ -76,10 +64,6 @@ export function cargarCedulasEstudiantes(http: HttpClient): Promise<string[]> {
                 const cedulas = data.map(item => item.cedula);
                 resolve(cedulas);
             },
-            (error) => {
-                console.error("Error al cargar las cédulas de los estudiantes:", error);
-                reject(error);
-            }
         );
     });
 }

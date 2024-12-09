@@ -23,7 +23,7 @@ export class EstudiantesComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
     this.estudiantesForm = this.fb.group({
-      cedula: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]], // Validación de cédula
+      cedula: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
       nombre: ['', Validators.required],
       apellido: ['', Validators.required],
       sexo: ['', Validators.required],
