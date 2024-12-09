@@ -30,7 +30,7 @@ export class LibrosComponent implements OnInit {
       autor: ['', Validators.required],
       ano: ['', [Validators.required, Validators.pattern(/^[0-9]{4}$/)]],
       tipo: ['', Validators.required],
-      estado: [true, Validators.required]
+      estado: true
     });
   }
 
