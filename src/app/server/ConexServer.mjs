@@ -9,7 +9,7 @@ const PORT = 3000;
 app.use(cors());
 app.use(express.json()); // Para manejar JSON
 
-
+//Conexión
 const getConenection = async () => {
     try {
         const mongoUrl = "mongodb://localhost:27017/appPrestamoLibros";
@@ -18,6 +18,65 @@ const getConenection = async () => {
         return client.db();
     } catch (error) {
         console.error("Error al conectar a MongoDB:", error);
+    }
+};
+
+
+//Metodos get
+const getEstudiantesFalse = async () => {
+    try {
+        const database = await getConenection();
+        const usuarios = await database.collection("Estudiantes").find({ estado: false }).toArray(); // Filtra los estudiantes cuyo estado sea true
+        return usuarios; // Retorna solo los usuarios cuyo estado es true
+    } catch (error) {
+        console.error("Error al obtener los usuarios:", error);
+        throw error; // Lanza el error para ser capturado en la ruta
+    }
+};
+
+const getLibros = async () => {
+    try {
+        const database = await getConenection();
+        const usuarios = await database.collection("Libros").find().toArray();
+        return usuarios; // Retorna solo los usuarios cuyo estado es true
+    } catch (error) {
+        console.error("Error al obtener los libros:", error);
+        throw error; // Lanza el error para ser capturado en la ruta
+    }
+};
+
+const getLibrosDisponibles = async () => {
+    try {
+        const database = await getConenection();
+        const usuarios = await database.collection("Libros").find({ estado: true }).toArray();
+        return usuarios;
+    } catch (error) {
+        console.error("Error al obtener los libros:", error);
+        throw error;
+    }
+};
+
+
+const getPrestamos = async () => {
+    try {
+        const database = await getConenection();
+        const usuarios = await database.collection("Prestamos").find().toArray(); // Filtra los estudiantes cuyo estado sea true
+        return usuarios; // Retorna solo los usuarios cuyo estado es true
+    } catch (error) {
+        console.error("Error al obtener los usuarios:", error);
+        throw error; // Lanza el error para ser capturado en la ruta
+    }
+};
+
+
+const getDevoluciones = async () => {
+    try {
+        const database = await getConenection(); // Establece la conexión a la base de datos
+        const devoluciones = await database.collection("Devoluciones").find().toArray(); // Obtiene todos los registros de la colección "Devoluciones"
+        return devoluciones; // Retorna el resultado
+    } catch (error) {
+        console.error("Error al obtener las devoluciones:", error);
+        throw error; // Lanza el error para ser capturado en la ruta
     }
 };
 
@@ -33,6 +92,19 @@ const getEstudiantesTrue = async () => {
     }
 };
 
+//Metodos post
+
+const añadirEstudiante = async (nuevoEstudiante) => {
+    try {
+        const database = await getConenection(); // Obtiene la conexión a la base de datos
+        const result = await database.collection("Estudiantes").insertOne(nuevoEstudiante); // Inserta un solo estudiante
+        return result; // Retorna el resultado de la inserción
+    } catch (error) {
+        console.error("Error al añadir el estudiante:", error);
+        throw error; // Lanza el error para ser capturado en la ruta
+    }
+};
+
 
 // Ruta para obtener usuarios
 app.get("/api/usuariosvalidos", async (req, res) => {
@@ -44,16 +116,7 @@ app.get("/api/usuariosvalidos", async (req, res) => {
     }
 });
 
-const getEstudiantesFalse = async () => {
-    try {
-        const database = await getConenection();
-        const usuarios = await database.collection("Estudiantes").find({ estado: false }).toArray(); // Filtra los estudiantes cuyo estado sea true
-        return usuarios; // Retorna solo los usuarios cuyo estado es true
-    } catch (error) {
-        console.error("Error al obtener los usuarios:", error);
-        throw error; // Lanza el error para ser capturado en la ruta
-    }
-};
+
 
 
 // Ruta para obtener usuarios
@@ -67,16 +130,7 @@ app.get("/api/usuariosnovalidos", async (req, res) => {
 });
 
 
-const añadirEstudiante = async (nuevoEstudiante) => {
-    try {
-        const database = await getConenection(); // Obtiene la conexión a la base de datos
-        const result = await database.collection("Estudiantes").insertOne(nuevoEstudiante); // Inserta un solo estudiante
-        return result; // Retorna el resultado de la inserción
-    } catch (error) {
-        console.error("Error al añadir el estudiante:", error);
-        throw error; // Lanza el error para ser capturado en la ruta
-    }
-};
+
 
 // Ruta para añadir un estudiante
 app.post("/api/addEstudiantes", async (req, res) => {
@@ -89,17 +143,17 @@ app.post("/api/addEstudiantes", async (req, res) => {
     }
 });
 
-
-const getLibros = async () => {
+const añadirLibro = async (nuevoLibro) => {
     try {
-        const database = await getConenection();
-        const usuarios = await database.collection("Libros").find().toArray();
-        return usuarios; // Retorna solo los usuarios cuyo estado es true
+        const database = await getConenection(); // Obtiene la conexión a la base de datos
+        const result = await database.collection("Libros").insertOne(nuevoLibro); // Inserta un solo estudiante
+        return result; // Retorna el resultado de la inserción
     } catch (error) {
-        console.error("Error al obtener los libros:", error);
+        console.error("Error al añadir el libro:", error);
         throw error; // Lanza el error para ser capturado en la ruta
     }
 };
+
 
 app.get("/api/getLibros", async (req, res) => {
     try {
@@ -110,16 +164,6 @@ app.get("/api/getLibros", async (req, res) => {
     }
 });
 
-const getLibrosDisponibles = async () => {
-    try {
-        const database = await getConenection();
-        const usuarios = await database.collection("Libros").find({ estado: true }).toArray();
-        return usuarios;
-    } catch (error) {
-        console.error("Error al obtener los libros:", error);
-        throw error;
-    }
-};
 
 app.get("/api/getLibrosDisponibles", async (req, res) => {
     try {
@@ -190,16 +234,7 @@ app.put("/api/updateLibro/:id", async (req, res) => {
 });
 
 
-const añadirLibro = async (nuevoLibro) => {
-    try {
-        const database = await getConenection(); // Obtiene la conexión a la base de datos
-        const result = await database.collection("Libros").insertOne(nuevoLibro); // Inserta un solo estudiante
-        return result; // Retorna el resultado de la inserción
-    } catch (error) {
-        console.error("Error al añadir el libro:", error);
-        throw error; // Lanza el error para ser capturado en la ruta
-    }
-};
+
 
 // Ruta para añadir un estudiante
 app.post("/api/addLibro", async (req, res) => {
@@ -250,18 +285,6 @@ app.post("/api/addPrestamos", async (req, res) => {
 
 
 
-const getPrestamos = async () => {
-    try {
-        const database = await getConenection();
-        const usuarios = await database.collection("Prestamos").find().toArray(); // Filtra los estudiantes cuyo estado sea true
-        return usuarios; // Retorna solo los usuarios cuyo estado es true
-    } catch (error) {
-        console.error("Error al obtener los usuarios:", error);
-        throw error; // Lanza el error para ser capturado en la ruta
-    }
-};
-
-
 // Ruta para obtener usuarios
 app.get("/api/getPrestamos", async (req, res) => {
     try {
@@ -272,16 +295,7 @@ app.get("/api/getPrestamos", async (req, res) => {
     }
 });
 
-const getDevoluciones = async () => {
-    try {
-        const database = await getConenection(); // Establece la conexión a la base de datos
-        const devoluciones = await database.collection("Devoluciones").find().toArray(); // Obtiene todos los registros de la colección "Devoluciones"
-        return devoluciones; // Retorna el resultado
-    } catch (error) {
-        console.error("Error al obtener las devoluciones:", error);
-        throw error; // Lanza el error para ser capturado en la ruta
-    }
-};
+
 
 // Endpoint para obtener las devoluciones
 app.get("/api/getDevoluciones", async (req, res) => {
