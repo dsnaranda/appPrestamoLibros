@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
-import { EstudiantesComponent } from './pages/formEstudiantes/estudiantes.component';
-import { NavbarComponent } from './pages/navbar/navbar.component';
-import { LibrosComponent } from './pages/formLibros/libros.component';
-import { PrestamosComponent } from './pages/formPrestamos/prestamos.component';
-import { DevolucionesComponent } from './pages/formDevoluciones/devoluciones.component';
+import { EstudiantesComponent } from './formularios/formEstudiantes/estudiantes.component';
+import { NavbarComponent } from './formularios/navbar/navbar.component';
+import { LibrosComponent } from './formularios/formLibros/libros.component';
+import { PrestamosComponent } from './formularios/formPrestamos/prestamos.component';
+import { DevolucionesComponent } from './formularios/formDevoluciones/devoluciones.component';
 
 export const routes: Routes = [
     {path: 'nav', component: NavbarComponent,
